@@ -282,10 +282,13 @@ Next up is the `OR` function, now that I've shown you how to do `NOT` and `AND`
 I recommend that you take a minute to try to figure out how to do the `OR`
 function.
 
+<details>
+    <summary>Click here to see one possible implementation</summary>
+
 ```
 OR      = λb1.λb2.b1 TRUE b2
-XOR     = λb1.λb2.b1 (NOT b2) b2
 ```
+</details>
 
 Now, using these functions we can define the `NAND` function. (I can think of
 two ways of doing it)
