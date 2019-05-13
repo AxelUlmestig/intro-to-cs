@@ -181,7 +181,56 @@ is called "currying".
 
 ### 3.1 Lazy vs eager evaluation <a name="lazy-vs-eager-evaluation"></a>
 
-TODO
+Before we talk more about what can be done with Lambda Calculus we have to talk
+briefly about eager (AKA strict) and lazy evaluation.
+
+In order to illustrate this I'll challenge the reader with a logical problem
+that is trivial to humans.
+
+_Step 1:_ \
+Imagine all the natural numbers, 1, 2, 3, etc...
+
+_Step 2:_ \
+Now take the first 3
+
+The result of this is obviously `[1, 2, 3]`, but if you were to naively pose
+this problem to a computer it would never produce a result. It would get stuck
+on step one and try to enumerate all of the infinite natural numbers. This
+approach is called "eager evaluation".
+
+When you solved this problem you did not try to enumerate all the natural
+numbers (or you would not have gotten this far in the text), instead you
+treated them as a potential source of data that you could gradually get more
+values from when needed. This approach is called "lazy evaluation".
+
+Another example would be calculating the value of
+```js
+f(g(x))
+```
+given values of the variable `x` and the functions `f` and `g`. A lazy
+individual would have a look at the implementation of `f` before calculating
+`g(x)`. What if the the function `f` looks like this?
+```js
+f = y => 3
+```
+
+Then it would not matter what the value of `g(x)` was, the result would always
+be `3`. This is again the lazy approach. The eager approach would be to always
+evaluate `g(x)` first regardless of what `f` looks like.
+
+Eager or lazy evaluation will almost always result in the value, but there are
+corner cases where the eager evaluation goes into infinite loops while the lazy
+doesn't. One example of this would be if the function `g` in the previous
+example always gets stuck in an infinite loop when called.
+
+Most mainstream programming languages do eager evaluation. I.e. they will
+always evaluate `g(x)` first in the above example. It has the advanatage of
+making the performance and memory usage of programs more predictable.
+
+Lambda Calculus is generally computed in a lazy fashion as this is a tool for
+scientists and not engineers. In this domain it's more important to have more
+computations terminate than it is to keep track of performance and memory usage
+in a practical application.
 
 ### 3.2 Boolean Algebra in Lambda Calculus <a name="booleans-algebra-in-lambda-calculus"></a>
 
