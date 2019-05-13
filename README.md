@@ -19,11 +19,18 @@ This post is based almost entirely on the book [Introduction to Theoretical
 Computer Science](https://introtcs.org/public/) by Boaz Barak. I highly
 recommend it if you find this topic interesting.
 
-## Table of Contents
+## 0. Table of Contents
 
-[1. NAND Gates](nand-gates)
+[1. NAND Gates](#1-nand-gates-) \
+[2. Turing Machines](#2-turing-machines-) \
+[3. Lambda Calculus](#3-lambda-calculus-) \
+    [3.1 Lazy vs Eager Evaluation](#31-lazy-vs-eager-evaluation-) \
+    [3.2 Boolean Algebra in Lambda Calculus](#32-booleans-algebra-in-lambda-calculus-) \
+    [3.3 Lists in Lambda Calculus](#33-lists-in-lambda-calculus-) \
+    [3.4 Recursion in Lambda Calculus](#34-recursion-in-lambda-calculus-) \
+    [3.5 Implementing the REDUCE function](#35-implementing-the-reduce-function-)
 
-## NAND Gates <a name="nand-gates"></a>
+## 1. NAND Gates <a name="nand-gates"></a>
 
 Let's start by expressing the standard boolean functions in terms of of NAND
 gates.
@@ -87,7 +94,7 @@ representation of a `NAND` program and some input and then returns the output
 of the supplied program. One crucial caveat here is that the program that we're
 interpreting must have fewer gates than the program doing the intrepreting.
 
-## Turing Machines
+## 2. Turing Machines <a name="turing-machines"></a>
 
 But there's obviously something missing here. All of your computers can
 compile/interpret programs of arbitrary length. They don't seem to be limited
@@ -136,9 +143,7 @@ defined to be a function that can be computed by a Turing Machine.
 Now I found this all to be quite disappointing after the elegant proof that any
 finite function can be computed by `NAND` gates.
 
-## Lazy vs eager evaluation
-
-## Lambda Calculus
+## 3. Lambda Calculus <a name="lambda-calculus"></a>
 
 Now we move away from Turing Machines to another computing model that is
 equivalent in power to the Turing Machine, the Lambda Calculus. Lambda Calculus deals with anonymous
@@ -173,6 +178,12 @@ And would be called like this:
 The outer parenthesis can be omitted. The process of simulating functions with
 multiple arguments by having functions with one argument return other functions
 is called "currying".
+
+### 3.1 Lazy vs eager evaluation <a name="lazy-vs-eager-evaluation"></a>
+
+TODO
+
+### 3.2 Boolean Algebra in Lambda Calculus <a name="booleans-algebra-in-lambda-calculus"></a>
 
 Now, we've been cheating a bit. This is not valid Lambda Calculus because Lambda Calculus does not
 contain the plus operator. Nor does it contain numbers or booleans or any other
@@ -247,7 +258,7 @@ state and symbol and returns a new state, symbol and movement instruction. Now
 all that's left is to define lists and functions that can operate on
 arbitrarily long lists.
 
-### Lists in Lambda Calculus
+### 3.3 Lists in Lambda Calculus <a name="lists-in-lambda-calculus"></a>
 
 Let's start by defining lists. We are going to be doing linked lists. A linked
 list contains two things, one element and one reference to the remaining list.
@@ -299,7 +310,7 @@ booleans = PAIR (TRUE (PAIR FALSE (PAIR TRUE NIL)))
          = [true, false, true]
 ```
 
-### Recursion in Lambda Calculus
+### 3.4 Recursion in Lambda Calculus <a name="recursion-in-lambda-calculus"></a>
 
 But, we don't have loops. How can we do list operations without loops? With
 recursions of course. Loops are in most modern programming languages quickly
@@ -314,7 +325,8 @@ integers.
 
 ```
 const sum = [1,2,3].reduce((mySum, x) => mySum + x, 0)
-          = 1 + 2 + 3 + 0 = 6
+          = 1 + (2 + (3 + 0))
+          = 6
 ```
 
 Now before we go into representing lists we're going to a quick detour on
@@ -391,7 +403,7 @@ So I'm not going to spend too much time here, I think the most productive thing
 to do is to just accept that it exists and works and then spend some time on
 this yourself if you're interested.
 
-### Implementing the REDUCE function
+### 3.5 Implementing the REDUCE function <a name="implementing-the-reduce-function"></a>
 
 ```
 REDUCE      = RECURSE (
