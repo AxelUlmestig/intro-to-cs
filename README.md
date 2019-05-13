@@ -234,9 +234,10 @@ in a practical application.
 
 ### 3.2 Boolean Algebra in Lambda Calculus <a name="booleans-algebra-in-lambda-calculus"></a>
 
-Now, we've been cheating a bit. This is not valid Lambda Calculus because Lambda Calculus does not
-contain the plus operator. Nor does it contain numbers or booleans or any other
-data type or structure that you can think of.
+Now, we've been cheating a bit in the previous examples. That was not valid
+Lambda Calculus because Lambda Calculus does not contain the plus operator. Nor
+does it contain numbers or booleans or any other data type or structure that
+you can think of.
 
 We are going to have to define those things in terms of anonymous functions.
 
