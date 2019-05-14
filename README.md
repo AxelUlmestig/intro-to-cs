@@ -362,7 +362,7 @@ returns `TRUE`.
 Now we can define lists of booleans:
 
 ```
-booleans = PAIR (TRUE (PAIR FALSE (PAIR TRUE NIL)))
+booleans = PAIR TRUE (PAIR FALSE (PAIR TRUE NIL))
          = [true, false, true]
 ```
 
