@@ -70,6 +70,16 @@ basically the ternary operator but only valid for booleans.
 IF      = (a, b, c) => OR(AND(a, b), AND(NOT(a), c))
 ```
 
+The trick to figuring out how to write a function like this using logic gates
+is to ask the question "when does this return `true`?". In this case you will
+realize that there are exactly two such cases.
+
+1. When `a` and `b` are `true`. Then `b` will be chosen and it is `true`.
+2. When `a` is `false` and `c` is `true`. Then `c` will be chosen and it is `true`.
+
+Now we can express this in english as this function is `true` either when `a`
+`AND` `b` are `true` `OR` when `a` is `NOT` `true` `AND` `c` is `true`.
+
 This function allows us to specify all functions from one bit to one bit. For
 example, we can implement the `NOT` function like so.
 
