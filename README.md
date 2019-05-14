@@ -35,6 +35,19 @@ recommend it if you find this topic interesting.
 
 ## 1. NAND Gates <a name="nand-gates"></a>
 
+The NAND (Not AND) function is a function that accepts to boolean variables
+(bits) and returns on boolean. It will only return `false` (0) if both
+arguments are `true` (1).
+
+The function's truth table looks like this:
+
+| b1 | b2 | output |
+|----|----|--------|
+| 0  | 0  | 1      |
+| 0  | 1  | 1      |
+| 1  | 0  | 1      |
+| 1  | 1  | 0      |
+
 Let's start by expressing the standard boolean functions in terms of of NAND
 gates.
 
@@ -106,7 +119,7 @@ by implementation details of the processors.
 The reason for this is that your processors can do loops. This brings us to the
 Turing Machine that I think everyone has heard of.
 
-A Turing Machine constists of an infinite tape divided into cells. Each cell
+A Turing Machine consists of an infinite tape divided into cells. Each cell
 contains a symbol that is a part of a finite alphabet. The Turing Machine also
 keeps track of an internal state with a finite number of configurations and a
 current index of the tape.
@@ -255,10 +268,10 @@ TRUE    = λx.λy.x
 FALSE   = λx.λy.y
 ```
 
-Now we have two functions that will help us choose between two things. The TRUE
-function will return its first argument and the FALSE function will return its
-second argument. This is exactly what the ternary operator that is present in
-most mainstream programming languages does.
+Now we have two functions that will help us choose between two things. The
+`TRUE` function will return its first argument and the `FALSE` function will
+return its second argument. This is exactly what the ternary operator that is
+present in most mainstream programming languages does.
 
 The astute reader will also notice that it's trivial to implement the `IF`
 function using this definition of booleans.
