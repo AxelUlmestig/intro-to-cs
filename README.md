@@ -10,10 +10,11 @@ infinite, there is an infinite number of integers you could apply the function
 to.
 
 Then we are going to use Turing Machines to calculate infinite functions and
-lastly going to show how the ugly mess that is the Turing Machine can be
-replaced by beautiful anonymous functions.
+show how the ugly mess that is the Turing Machine can be replaced by beautiful
+the anonymous functions of the Lambda Calculus.
 
-If there's time we're going to have a look at uncomputable functions.
+Lastly we'll touch on uncomputable functions. I.e. functions that can't be
+computed by Turing Machines or Lambda Calculus.
 
 This post is based almost entirely on the book [Introduction to Theoretical
 Computer Science](https://introtcs.org/public/) by Boaz Barak. I highly
@@ -28,7 +29,9 @@ recommend it if you find this topic interesting.
     [3.2 Boolean Algebra in Lambda Calculus](#32-booleans-algebra-in-lambda-calculus-) \
     [3.3 Lists in Lambda Calculus](#33-lists-in-lambda-calculus-) \
     [3.4 Recursion in Lambda Calculus](#34-recursion-in-lambda-calculus-) \
-    [3.5 Implementing the REDUCE function](#35-implementing-the-reduce-function-)
+    [3.5 Implementing the REDUCE function](#35-implementing-the-reduce-function-) \
+    [3.6 Simulating a Turing Machine with Lambda-Calculus](#36-simulating-a-turing-machine-with-lambda-calculus) \
+[4. Uncomputable Functions](#4-uncomputable-functions)
 
 ## 1. NAND Gates <a name="nand-gates"></a>
 
@@ -461,14 +464,16 @@ RECURSE     = λf.f(λx.f(x x)(λx.f(x x)))
 ```
 
 Now we have created a function that can turn a non recursive function into a
-recursive one. Let that sink in for a moment. This function is notoriously hard
-to grasp. I've spent a lot of time staring at this and I don't think I fully
-understood until I implemented it myself without looking at a reference. And
-even now I have to think quite hard every time I do it.
+recursive one. Let that sink in for a moment.
 
-So I'm not going to spend too much time here, I think the most productive thing
-to do is to just accept that it exists and works and then spend some time on
-this yourself later if you're interested.
+This function is notoriously hard to grasp. I've spent a lot of time staring at
+this and I don't think I fully understood it until I implemented it myself
+without looking at a reference. And even now I have to think quite hard every
+time I do it.
+
+So we're not going to spend too much time here, I think the most productive
+thing to do is to just accept that it exists and works and then spend some time
+on this yourself later if you're interested.
 
 ### 3.5 Implementing the REDUCE function <a name="implementing-the-reduce-function"></a>
 
@@ -517,4 +522,85 @@ FILTER  = λf.λlist.REDUCE (λx.λy.IF (f x) (PAIR x y) y) NIL list
 
 Here we only include the elements where `f x` evaluates to `TRUE` when we
 reconstruct the list.
+
+### 3.6 Simulating a Turing Machine with Lambda Calculus
+
+TODO
+
+### 4. Uncomputable Functions
+
+Computable functions are defined to be those can be calculated by a Turing
+Machine, as we touched upon earlier. But this begs the question:
+
+Which functions can not be computed by Turing Machines?
+
+Functions that lead to paradoxes is the answer. This is famously captured by
+the Halting Problem. The halting problem seeks to find an algorithm that can
+decide if a given program combined with a given input will halt. Sadly, this
+algorithm does not exist. It can't exist. Which is a shame because it would
+have been extremely useful to the software industry.
+
+Here's the proof of why it can't exist. Imagine that there is a function
+'willHalt' that takes a function as input and returns `true` or `false`
+depending on if the supplied function will always halt or not.
+
+In that case this snippet of JavaScript code would lead to a paradox.
+
+```js
+const f = willHalt => {
+    while(willHalt(f)) {}
+
+    return 'halted'
+}
+```
+
+If the function `willHalt` states that `f` will halt, then it will go into an
+infinite loop and decidedly not halt. And if `willHalt` thinks that `f` won't
+halt then it will halt quit immediately.
+
+Now you might be thinking that I'm being a bit of a jerk here. Referring to the
+`willHalt` function in my function may seem like cheating but this does prove
+that there's no general `willHalt` algorithm that works for _all_ programs.
+
+Some of you who are experienced developers might not be impressed by this. You
+might be thinking that you can look at any program and determine if it will
+halt or not (as long as it doesn't explicitly reference the `willHalt` function
+to avoid paradoxes).
+
+To challenge this I would ask the reader to consider the following Node JS
+program.
+
+```js
+const R = require('ramda')
+
+const isPrime = n =>
+    R.all(x => x % n != 0, R.range(2, n))
+
+const isSumOfTwoPrimes = n =>
+    R.all(x => isPrime(x) && isPrime(n - x), R.range(2, n))
+
+let i = 4
+while(isSumOfTwoPrimes(i)) {
+    i += 2
+    console.log(i)
+}
+
+console.log(`${i} can not be expressed as the sum of two primes, Goldbach is disproven`)
+```
+
+This program relies a bit on the `Ramda` library to generate ranges of numbers
+(`R.range`) and to check if some predicate holds for all elements of a list
+(`R.all`). I hope that this is not too confusing even if you're not familiar
+with the particular library.
+
+This program tries to disprove the famous [Goldbach's
+conjecture](https://en.wikipedia.org/wiki/Goldbach%27s_conjecture) which states
+that "Every even integer greater than 2 can be expressed as the sum of two
+primes"
+
+If you can determine if this program halts or not you will have solved an open
+problem in mathematics that has been unsolved since 1742 and you would probably
+become quite famous in certain nerdy circles.
+
+Hopefully this convinces you that the halting problem does not have a solution.
 
