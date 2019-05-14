@@ -295,11 +295,11 @@ two ways of doing it)
 
 ```
 NAND    = λb1.λb2.b1 (NOT b2) TRUE
-          λb1.λb2.NOT(AND b1 b2)
+        = λb1.λb2.NOT(AND b1 b2)
 ```
 
-Now that we've constructed the `NAND` function we've effectively proven that you
-can calculate all finite functions using the Lambda Calculus.
+By constructing the `NAND` function we've effectively proven that you can
+calculate all finite functions using the Lambda Calculus.
 
 But the Turing Machine can still do more than that, it can calculate functions
 that have inputs of arbitrary sizes. How can we prove that the Lambda Calculus can do the
@@ -350,11 +350,11 @@ we've defined the function `IS_EMPTY` that checks if a list is empty.
 IS_EMPTY = λp.p(λx.λy.FALSE)
 ```
 
-By staring at this for a while we will realize that if we pass a `(PAIR x y)`
-to `IS_EMPTY` it will always return `FALSE` regardless of which elements x and
-y are.  But if we instead pass `NIL` to `IS_EMPTY` it will always return
-`TRUE`. Because the `NIL` function never invokes the function we pass it, it
-always returns `TRUE`.
+By staring at this for a while we will realize that if we pass a `PAIR x y` to
+`IS_EMPTY` it will always return `FALSE` regardless of which elements x and y
+are.  But if we instead pass `NIL` to `IS_EMPTY` it will always return `TRUE`.
+Because the `NIL` function never invokes the function we pass it, it always
+returns `TRUE`.
 
 Now we can define lists of booleans:
 
