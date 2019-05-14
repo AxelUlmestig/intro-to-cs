@@ -376,18 +376,31 @@ A quick recap on the `reduce` function. It is used to "reduce" a list of values
 down to a single value. The prototypical example is summarizing a list of
 integers.
 
-```
+```js
 const sum = [1,2,3].reduce((mySum, x) => mySum + x, 0)
-          = 1 + (2 + (3 + 0))
+          = 0 + 1 + 2 + 3
           = 6
 ```
 
-Now before we go into representing lists we're going to a quick detour on
-recursion which is not trivial in the lambda calculus since anonymous functions
-can't call them selves by name for natural reasons.
+By looking at this example of the `reduce` function we can see that it's quite
+recursive.
 
-Here's the `factorial` function written recursively in JS, calling itself by
-name.
+```js
+const add   = (a, b) => a + b
+
+const sum   = [1,2,3].reduce(add, 0)
+            = [2,3].reduce(add, 1)
+            = [3].reduce(add, 3)
+            = [].reduce(add, 6)
+            = 6
+```
+
+Now, before we go into implementing the `reduce` function we're going to do a
+quick detour on recursion. Recursion is not trivial in the lambda calculus
+since anonymous functions can't call them selves by name for natural reasons.
+
+Here's the `factorial` function written recursively in JavaScript, calling
+itself by name.
 
 ```js
 const factorial0 = (x) => {
@@ -401,13 +414,13 @@ Now, that's not possible in the Lambda Calculus, so we're going to have to
 apply a little trick.
 
 ```js
-const factorial1 = (me, x) => {
+const factorial1 = me => x => {
     if(x < 1) return 1
 
-    return x * me(me, x - 1)
+    return x * me(me)(x - 1)
 }
 
-const factorial = x => factorial1(factorial1, x)
+const factorial = factorial1(factorial1)
 ```
 
 Now the `factorial` function is recursive as long as it's given a copy of
@@ -416,7 +429,7 @@ hands didn't think that this was elegant enough. They wanted to write the
 function without having to supply `me` to `me` in the recursive step. Like
 this:
 
-```
+```js
 const factorial2 = me => x => {
     if(x < 1) return 1
 
@@ -425,19 +438,20 @@ const factorial2 = me => x => {
 ```
 
 Even though the first version works just fine. So they came up with an even
-trickier trick.  It's called the Y combinator and it works like this:
+trickier trick. It's called the "Y Combinator" and it works like this:
 
-```
+```js
 const RECURSE = f => {
     const tempF = me => x => f(me(me))(x)
-    // the `x` parameters must be explicitly given due to JS's eager evaluation
-    // const tempF = me => f(me(me))
 
     return f(tempF(tempF))
 }
 
 const ycFactorial = RECURSE(factorial2)
 ```
+
+Here we've created a wrapper function, `tempF` that applies the same trick as
+before. It passes a copy of itself to itself.
 
 This can be expressed much more concisely (and opaquely) with the Lambda
 Calculus:
@@ -454,16 +468,53 @@ even now I have to think quite hard every time I do it.
 
 So I'm not going to spend too much time here, I think the most productive thing
 to do is to just accept that it exists and works and then spend some time on
-this yourself if you're interested.
+this yourself later if you're interested.
 
 ### 3.5 Implementing the REDUCE function <a name="implementing-the-reduce-function"></a>
+
+Now, let's go back to the `REDUCE` function. Here's an implementation of it in
+Lambda Calculus.
 
 ```
 REDUCE      = RECURSE (
     λme.λf.λinit.λlist.
         IF  (IS_EMPTY list)
             init
-            (f (FST list) (me f init (SND list)))
+            (me f (f init (FST list)) (SND list))
 )
 ```
+
+This might look a little scary but it's not that complicated if we break it
+down. First we check if the list is empty, if so we return `init` value.
+
+If the list is not empty, then we call the `REDUCE` function recursively with
+the tail of the list (every element except the first) and an updated `init`
+value. We get the updated `init` value by applying the function `f` to the
+first element in the list and the `init` value.
+
+One interesting property of this `REDUCE` implementation is that if you reduce
+function with the `PAIR` function and `NIL` you will get an identical list back.
+
+```
+REDUCE PAIR NIL list == list
+```
+
+With this insight it's not so tricky to implement the `MAP` function.
+
+```
+MAP     = λf.λlist.REDUCE (λx.λy.PAIR (f x) y) NIL list
+```
+
+This is very similar to the example where we just recreated the list with the
+`PAIR` function. But here we apply the function `f` on each element before we
+recreate the list.
+
+The `FILTER` function can also be implemented in a similar fashion.
+
+```
+FILTER  = λf.λlist.REDUCE (λx.λy.IF (f x) (PAIR x y) y) NIL list
+```
+
+Here we only include the elements where `f x` evaluates to `TRUE` when we
+reconstruct the list.
 
