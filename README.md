@@ -407,11 +407,13 @@ booleans = PAIR TRUE (PAIR FALSE (PAIR TRUE NIL))
 ### 3.4 Recursion in Lambda Calculus <a name="recursion-in-lambda-calculus"></a>
 
 But, we don't have loops. How can we do list operations without loops? With
-recursions of course. Loops are in most modern programming languages quickly
-being replaced by the higher order functions `map`, `filter` and `reduce` (or
-`Select`, `Where` and `Aggregate` if you're stuck in .NET land). And as `map`
-and `filter` can be expressed in terms of `reduce` it's enough to be able to
-create the `reduce` function.
+recursions of course.
+
+List operations that are using loops can be done using the higher order
+functions `map`, `filter` and `reduce` that are present in most mainstream
+programming languages. (`Select`, `Where` and `Aggregate` if you're stuck in
+.NET land). And as `map` and `filter` can be expressed in terms of `reduce`
+it's enough to be able to create the `reduce` function.
 
 A quick recap on the `reduce` function. It is used to "reduce" a list of values
 down to a single value. The prototypical example is summarizing a list of
@@ -464,7 +466,7 @@ const factorial1 = me => x => {
 const factorial = factorial1(factorial1)
 ```
 
-Now the `factorial` function is recursive as long as it's given a copy of
+Now the `factorial1` function is recursive as long as it's given a copy of
 itself. But some mathematicians in the 30's who had a lot of time on their
 hands didn't think that this was elegant enough. They wanted to write the
 function without having to supply `me` to `me` in the recursive step. Like
@@ -528,7 +530,7 @@ REDUCE      = RECURSE (
 ```
 
 This might look a little scary but it's not that complicated if we break it
-down. First we check if the list is empty, if so we return `init` value.
+down. First we check if the list is empty, if so we return the `init` value.
 
 If the list is not empty, then we call the `REDUCE` function recursively with
 the tail of the list (every element except the first) and an updated `init`
@@ -541,6 +543,10 @@ function with the `PAIR` function and `NIL` you will get an identical list back.
 ```
 REDUCE PAIR NIL list == list
 ```
+
+Also notice that this goes into an infinite loop if we eagerly evaluate the
+arguments to the `IF` function. We don't want to evaluate `me f (f init (FST list)) (SND list)`
+if `IS_EMPTY list` is `TRUE`.
 
 With this insight it's not so tricky to implement the `MAP` function.
 
