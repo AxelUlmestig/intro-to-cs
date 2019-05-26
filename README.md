@@ -35,8 +35,8 @@ recommend it if you find this topic interesting.
 
 ## 1. NAND Gates <a name="nand-gates"></a>
 
-The NAND (Not AND) function is a function that accepts to boolean variables
-(bits) and returns on boolean. It will only return `false` (0) if both
+The NAND (Not AND) function is a function that accepts two boolean variables
+(bits) and returns one boolean. It will only return `false` (0) if both
 arguments are `true` (1).
 
 The function's truth table looks like this:
@@ -62,9 +62,9 @@ as `NAND` gates like we just did. We can in other words use all of those functio
 then later just "compile" down to pure `NAND`.
 
 Using our logic gates we can create the `IF` function. It takes three boolean
-arguments, if the first one is true it will return the value of the second
-argument. If it's false it will return the value of the third argument. It's
-basically the ternary operator but only valid for booleans.
+arguments, if the first argument is `true` it will return the value of the
+second argument. If it's `false` it will return the value of the third
+argument. It's basically the ternary operator but only valid for booleans.
 
 ```
 IF      = (a, b, c) => OR(AND(a, b), AND(NOT(a), c))
