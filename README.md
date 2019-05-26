@@ -301,8 +301,23 @@ one is the `NOT` function.
 
 ```
 NOT     = λb.b FALSE TRUE
+```
+
+If the boolean `b` is `TRUE` then it will return the first of its two
+arguments, namely `FALSE`. Similarly, if `b` is `FALSE` then it will return the
+second argument which is `TRUE`.
+
+The `AND` function is slightly trickier. Here we get two boolean arguments.
+
+```
 AND     = λb1.λb2.b1 b2 FALSE
 ```
+
+Once again we're using a similar tactic, we make choices by applying arguments
+to the booleans. If `b1` is `FALSE` then we want to return `FALSE`. So `FALSE`
+is the second argument to `b1`. But if `b1` is `TRUE` then we want to return
+`TRUE` if `b2` is `TRUE` and `FALSE` otherwise. That is equivalent to just
+returning the value of `b2`.
 
 Next up is the `OR` function, now that I've shown you how to do `NOT` and `AND`
 I recommend that you take a minute to try to figure out how to do the `OR`
@@ -328,9 +343,9 @@ By constructing the `NAND` function we've effectively proven that you can
 calculate all finite functions using the Lambda Calculus.
 
 But the Turing Machine can still do more than that, it can calculate functions
-that have inputs of arbitrary sizes. How can we prove that the Lambda Calculus can do the
-same? Simple, we just simulate a Turing Machine in the Lambda Calculus. (It's
-actually not that simple to do, but you get my point).
+that have inputs of arbitrary sizes. How can we prove that the Lambda Calculus
+can do the same? Simple, we just simulate a Turing Machine in the Lambda
+Calculus. (It's actually not that simple to do, but you get my point).
 
 Just like we did before, we can construct a finite function that takes the
 state and symbol and returns a new state, symbol and movement instruction. Now
