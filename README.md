@@ -618,10 +618,10 @@ program.
 const R = require('ramda')
 
 const isPrime = n =>
-    R.all(x => x % n != 0, R.range(2, n))
+    R.all(x => n % x != 0, R.range(2, n))
 
 const isSumOfTwoPrimes = n =>
-    R.all(x => isPrime(x) && isPrime(n - x), R.range(2, n))
+    R.any(x => isPrime(x) && isPrime(n - x), R.range(2, n))
 
 let i = 4
 while(isSumOfTwoPrimes(i)) {
@@ -633,9 +633,9 @@ console.log(`${i} can not be expressed as the sum of two primes, Goldbach is dis
 ```
 
 This program relies a bit on the `Ramda` library to generate ranges of numbers
-(`R.range`) and to check if some predicate holds for all elements of a list
-(`R.all`). I hope that this is not too confusing even if you're not familiar
-with the particular library.
+(`R.range`) and to check if some predicate holds for all or any elements of a
+list (`R.all` & `R.any`). I hope that this is not too confusing even if you're
+not familiar with the particular library.
 
 This program tries to disprove the famous [Goldbach's
 conjecture](https://en.wikipedia.org/wiki/Goldbach%27s_conjecture) which states
